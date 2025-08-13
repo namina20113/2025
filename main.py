@@ -23,13 +23,19 @@ st.markdown(
         text-align: center;
         margin-top: 20px;
     }
+    .sub {
+        font-size: 1.1em;
+        text-align: center;
+        margin-top: 15px;
+        color: #555;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
 st.markdown('<div class="title">🧠 나의 MBTI 성격 테스트</div>', unsafe_allow_html=True)
-st.write("아래 8가지 질문에 답해 보세요! 당신의 성격 유형을 알려드립니다.")
+st.write("아래 8가지 질문에 답해 보세요! 당신의 성격 유형과 잘 맞는 유형을 알려드립니다.")
 
 # 질문 리스트 (8개)
 questions = [
@@ -62,7 +68,7 @@ for idx, (q, options) in enumerate(questions):
         scores["S"] += choice == options[0]
         scores["N"] += choice == options[1]
 
-# MBTI 결과 설명
+# MBTI 설명
 mbti_descriptions = {
     "ISTJ": "신중하고 책임감 있는 관리자형. 약속을 잘 지키고 체계적인 성격.",
     "ISFJ": "헌신적이고 배려심 깊은 수호자형. 주변 사람을 잘 돌봄.",
@@ -82,6 +88,26 @@ mbti_descriptions = {
     "ENTJ": "결단력 있고 효율적인 지휘관형. 목표 달성에 집중."
 }
 
+# 궁합이 잘 맞는 MBTI
+best_match = {
+    "ISTJ": ["ESFP", "ESTP"],
+    "ISFJ": ["ESFP", "ESTP"],
+    "INFJ": ["ENFP", "ENTP"],
+    "INTJ": ["ENFP", "ENTP"],
+    "ISTP": ["ESFJ", "ENFJ"],
+    "ISFP": ["ENFJ", "ESFJ"],
+    "INFP": ["ENFJ", "ENTJ"],
+    "INTP": ["ENTJ", "ESTJ"],
+    "ESTP": ["ISFJ", "ISTJ"],
+    "ESFP": ["ISFJ", "ISTJ"],
+    "ENFP": ["INFJ", "INTJ"],
+    "ENTP": ["INFJ", "INTJ"],
+    "ESTJ": ["ISFP", "ISTP"],
+    "ESFJ": ["ISFP", "ISTP"],
+    "ENFJ": ["INFP", "ISFP"],
+    "ENTJ": ["INFP", "INTP"]
+}
+
 # 결과 버튼
 if st.button("📊 결과 확인하기"):
     mbti = ""
@@ -96,5 +122,15 @@ if st.button("📊 결과 확인하기"):
     if mbti in mbti_descriptions:
         st.markdown(f'<div class="desc">{mbti_descriptions[mbti]}</div>', unsafe_allow_html=True)
 
-    # MBTI 이미지 표시 (구글 이미지 사용 가능)
-    st.image(f"https://raw.githubusercontent.com/creotiv/mbti-icons/main/{mbti}.png", width=200)
+    # MBTI 아이콘
+    st.image(f"https://raw.githubusercontent.com/creotiv/mbti-icons/main/{mbti}.png", width=150)
+
+    # 궁합 MBTI 표시
+    if mbti in best_match:
+        matches = best_match[mbti]
+        st.markdown('<div class="sub">💖 잘 맞는 MBTI 유형</div>', unsafe_allow_html=True)
+        cols = st.columns(len(matches))
+        for i, m in enumerate(matches):
+            with cols[i]:
+                st.image(f"https://raw.githubusercontent.com/creotiv/mbti-icons/main/{m}.png", width=100)
+                st.markdown(f"<center>{m}</center>", unsafe_allow_html=True)
