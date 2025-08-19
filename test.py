@@ -1,73 +1,66 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="오늘의 코디 추천", page_icon="👕", layout="centered")
+st.title("📚 고등학교 공부 분위기 노래 추천 앱 (K-팝/팝 위주)")
 
-st.title("👕 오늘의 코디 추천")
-st.write("날씨와 기분을 선택하면, 랜덤 코디와 이미지를 보여드려요!")
+# 1️⃣ 과목 선택
+subject = st.selectbox("공부할 과목을 선택하세요:", [
+    "국어", "영어", "수학", "물리", "화학", "생물", "지구과학",
+    "한국사", "세계사", "지리", "생활과 윤리", "윤리", "정치와 법", "기타"
+])
 
-# 날씨와 기분 선택
-weather = st.selectbox("오늘 날씨는 어떤가요?", ["맑음", "비", "눈", "더움", "추움"])
-mood = st.selectbox("오늘 기분은 어떤가요?", ["활발", "차분", "우울", "설렘", "편안"])
+# 2️⃣ 책/자료 입력
+book = st.text_input("공부할 책이나 자료를 입력하세요 (선택 사항):")
 
-# 코디 데이터
-outfits = {
-    "맑음": {
-        "활발": ["밝은색 티셔츠 + 청바지 + 운동화", "스트라이프 셔츠 + 치노팬츠"],
-        "차분": ["화이트 셔츠 + 슬랙스 + 로퍼", "가디건 + 원피스"],
-        "우울": ["후드티 + 조거팬츠", "니트 + 데님팬츠"],
-        "설렘": ["플로럴 원피스 + 샌들", "셔츠 + 니트조끼 + 스커트"],
-        "편안": ["오버핏 티셔츠 + 반바지", "루즈핏 맨투맨 + 트레이닝팬츠"],
-    },
-    "비": {
-        "활발": ["방수 자켓 + 조거팬츠", "야상 + 반팔티"],
-        "차분": ["트렌치코트 + 셔츠 + 슬랙스", "롱원피스 + 레인부츠"],
-        "우울": ["블랙 후드집업 + 청바지", "니트 + 와이드팬츠"],
-        "설렘": ["컬러풀 우산 + 미니원피스", "레인코트 + 밝은 부츠"],
-        "편안": ["롱 가디건 + 레깅스", "빅사이즈 셔츠 + 조거팬츠"],
-    },
-    "눈": {
-        "활발": ["패딩 + 스키팬츠", "후리스 + 청바지"],
-        "차분": ["울코트 + 머플러", "니트 원피스 + 롱부츠"],
-        "우울": ["블랙 패딩 + 조거팬츠", "후드 + 데님팬츠"],
-        "설렘": ["화이트 코트 + 스커트", "컬러 패딩 + 부츠"],
-        "편안": ["퍼 자켓 + 레깅스", "롱패딩 + 츄리닝"],
-    },
-    "더움": {
-        "활발": ["반팔티 + 반바지 + 샌들", "민소매 + 린넨팬츠"],
-        "차분": ["린넨셔츠 + 슬랙스", "롱 원피스 + 샌들"],
-        "우울": ["오버핏 티셔츠 + 반바지", "민소매 + 트레이닝팬츠"],
-        "설렘": ["플로럴 원피스 + 샌들", "크롭티 + 미니스커트"],
-        "편안": ["헐렁한 티셔츠 + 반바지", "루즈핏 셔츠 + 와이드팬츠"],
-    },
-    "추움": {
-        "활발": ["패딩 + 조거팬츠", "점퍼 + 데님팬츠"],
-        "차분": ["코트 + 니트 + 머플러", "니트 원피스 + 롱부츠"],
-        "우울": ["블랙 패딩 + 츄리닝", "니트 + 와이드팬츠"],
-        "설렘": ["더플코트 + 체크스커트", "컬러 코트 + 원피스"],
-        "편안": ["후드티 + 패딩바지", "롱패딩 + 니트"],
-    }
+# 3️⃣ 공부 분위기 선택
+mood = st.selectbox("공부 분위기를 선택하세요:", [
+    "집중", "편안함", "에너지", "감성", "차분함", "활기참", "긴장감", "몽환적", "상쾌함", "우울함"
+])
+
+# 과목별 추천곡 (K-팝/팝 위주)
+base_songs = {
+    "국어": ["아이유 - 밤편지", "태연 - Fine", "Ed Sheeran - Perfect", "Adele - Hello"],
+    "영어": ["Taylor Swift - Lover", "Justin Bieber - Peaches", "BTS - Dynamite", "BLACKPINK - How You Like That"],
+    "수학": ["Red Velvet - Psycho", "EXO - Love Shot", "Coldplay - Clocks", "Maroon 5 - Memories"],
+    "물리": ["SHINee - View", "TWICE - Fancy", "Imagine Dragons - Believer", "The Weeknd - Blinding Lights"],
+    "화학": ["BTS - Life Goes On", "SEVENTEEN - Left & Right", "Dua Lipa - Levitating", "Ariana Grande - Positions"],
+    "생물": ["IU - Palette", "BLACKPINK - Lovesick Girls", "Ed Sheeran - Shape of You", "Billie Eilish - Ocean Eyes"],
+    "지구과학": ["BTS - Spring Day", "Red Velvet - Red Flavor", "Coldplay - Higher Power", "Maroon 5 - Girls Like You"],
+    "한국사": ["BIGBANG - BANG BANG BANG", "EXO - Call Me Baby", "Adele - Rolling in the Deep", "Bruno Mars - Just the Way You Are"],
+    "세계사": ["BTS - Not Today", "TWICE - Yes or Yes", "Imagine Dragons - Radioactive", "Lady Gaga - Poker Face"],
+    "지리": ["BLACKPINK - Kill This Love", "IU - Blueming", "Coldplay - Viva La Vida", "Ed Sheeran - Bad Habits"],
+    "생활과 윤리": ["Red Velvet - Rookie", "BTS - Permission to Dance", "Dua Lipa - Don't Start Now", "Ariana Grande - 34+35"],
+    "윤리": ["SHINee - Sherlock", "TWICE - Signal", "Maroon 5 - Sugar", "The Weeknd - Save Your Tears"],
+    "정치와 법": ["BIGBANG - Fantastic Baby", "EXO - Power", "Coldplay - Fix You", "Adele - Send My Love"],
+    "기타": ["BTS - Boy With Luv", "BLACKPINK - DDU-DU DDU-DU", "Ed Sheeran - Photograph", "Taylor Swift - Shake It Off"]
 }
 
-# Unsplash 키워드 (회원가입 불필요)
-unsplash_keywords = {
-    "맑음": "casual,outfit,fashion",
-    "비": "raincoat,umbrella,style",
-    "눈": "winter,outfit,coat",
-    "더움": "summer,casual,look",
-    "추움": "winter,knit,coat",
+# 분위기별 추천곡 (K-팝/팝)
+mood_songs = {
+    "집중": ["BTS - Blue & Grey", "IU - Eight", "Coldplay - Adventure of a Lifetime", "Adele - Easy on Me"],
+    "편안함": ["TWICE - What is Love?", "Red Velvet - One of These Nights", "Ed Sheeran - Perfect", "Billie Eilish - Everything I Wanted"],
+    "에너지": ["BTS - Fire", "BLACKPINK - DDU-DU DDU-DU", "Dua Lipa - Physical", "Imagine Dragons - Thunder"],
+    "감성": ["IU - Love Poem", "Taeyeon - 11:11", "Adele - Someone Like You", "Sam Smith - Stay With Me"],
+    "차분함": ["EXO - Universe", "Red Velvet - Automatic", "Coldplay - The Scientist", "Ed Sheeran - Thinking Out Loud"],
+    "활기참": ["BTS - Dynamite", "TWICE - Cheer Up", "Bruno Mars - Uptown Funk", "Taylor Swift - You Belong With Me"],
+    "긴장감": ["BIGBANG - Loser", "BLACKPINK - Kill This Love", "Imagine Dragons - Believer", "Adele - Rolling in the Deep"],
+    "몽환적": ["IU - Palette", "SHINee - Married to the Music", "Billie Eilish - Bury a Friend", "Coldplay - Midnight"],
+    "상쾌함": ["TWICE - Alcohol-Free", "Red Velvet - Red Flavor", "Ed Sheeran - Shape of You", "Dua Lipa - Levitating"],
+    "우울함": ["Taeyeon - Fine", "IU - Through the Night", "Adele - Hello", "Sam Smith - Too Good at Goodbyes"]
 }
 
-if st.button("코디 추천 받기 🎁"):
-    # 추천 코디 텍스트
-    recommendation = random.choice(outfits[weather][mood])
-    st.success(f"오늘의 추천 코디는: **{recommendation}** ✨")
+# 추천 함수
+def recommend_songs(subject, book, mood):
+    songs = base_songs.get(subject, base_songs["기타"]) + mood_songs.get(mood, [])
+    if book:
+        songs.append(f"{book} 테마 플레이리스트")
+    return random.sample(songs, min(5, len(songs)))  # 최대 5곡 추천
 
-    # Unsplash 랜덤 이미지
-    keyword = unsplash_keywords[weather]
-    sig = random.randint(1, 100000)  # 매번 다른 이미지 강제
-    img_url = f"https://source.unsplash.com/400x400/?{keyword}&sig={sig}"
-
-    st.image(img_url, caption="랜덤 패션 이미지", use_column_width=True)
+# 추천 결과
+if st.button("추천 노래 보기"):
+    songs = recommend_songs(subject, book, mood)
+    st.subheader("추천 노래 🎵")
+    for song in songs:
+        st.write(f"- {song}")
 
 
