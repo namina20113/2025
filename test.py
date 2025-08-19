@@ -1,10 +1,14 @@
 import streamlit as st
 import random
 
-st.set_page_config(page_title="오늘의 코디 추천", page_icon="👕", layout="centered")
+st.title("Unsplash 랜덤 이미지 테스트")
 
-st.title("👕 오늘의 코디 추천")
-st.write("날씨와 기분을 선택하면, 딱 맞는 코디를 추천해드려요!")
+keyword = "fashion,outfit"
+sig = random.randint(1, 10000)
+img_url = f"https://source.unsplash.com/400x400/?{keyword}&sig={sig}"
+
+st.write("이미지 URL:", img_url)
+st.image(img_url, caption="테스트 이미지", use_column_width=True)
 
 # 날씨와 기분 선택
 weather = st.selectbox("오늘 날씨는 어떤가요?", ["맑음", "비", "눈", "더움", "추움"])
