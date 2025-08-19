@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-st.title("📚 고등학교 공부 분위기 노래 추천 앱 (K-팝/팝 위주)")
+st.title("📚 고등학교 공부 노래 추천 ")
 
 # 1️⃣ 과목 선택
 subject = st.selectbox("공부할 과목을 선택하세요:", [
@@ -10,7 +10,7 @@ subject = st.selectbox("공부할 과목을 선택하세요:", [
 ])
 
 # 2️⃣ 책/자료 입력
-book = st.text_input("공부할 책이나 자료를 입력하세요 (선택 사항):")
+book = st.text_input("읽을 책이나 공부하는 자료를 입력하세요 (선택 사항):")
 
 # 3️⃣ 공부 분위기 선택
 mood = st.selectbox("공부 분위기를 선택하세요:", [
