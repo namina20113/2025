@@ -10,7 +10,7 @@ st.write("날씨와 기분을 선택하면, 딱 맞는 코디를 추천해드려
 weather = st.selectbox("오늘 날씨는 어떤가요?", ["맑음", "비", "눈", "더움", "추움"])
 mood = st.selectbox("오늘 기분은 어떤가요?", ["활발", "차분", "우울", "설렘", "편안"])
 
-# 추천 코디 데이터 (설명만)
+# 코디 데이터
 outfits = {
     "맑음": {
         "활발": ["밝은색 티셔츠 + 청바지 + 운동화", "스트라이프 셔츠 + 치노팬츠 + 스니커즈"],
@@ -49,7 +49,7 @@ outfits = {
     }
 }
 
-# Unsplash 키워드 (랜덤 이미지)
+# Unsplash 키워드 (날씨별 랜덤 이미지용)
 unsplash_keywords = {
     "맑음": "casual,outfit,fashion",
     "비": "raincoat,umbrella,style",
@@ -58,12 +58,15 @@ unsplash_keywords = {
     "추움": "winter,knit,coat",
 }
 
-# 추천 결과 출력
+# 추천 결과
 if st.button("코디 추천 받기 🎁"):
     recommendation = random.choice(outfits[weather][mood])
     st.success(f"오늘의 추천 코디는: **{recommendation}** ✨")
-    
-    # Unsplash에서 랜덤 이미지 가져오기
+
+    # 랜덤 sig 값 붙여서 매번 새로운 이미지 요청
     keyword = unsplash_keywords[weather]
-    img_url = f"https://source.unsplash.com/400x400/?{keyword},fashion"
+    sig = random.randint(1, 10000)
+    img_url = f"https://source.unsplash.com/400x400/?{keyword}&sig={sig}"
+
     st.image(img_url, caption="랜덤 패션 코디 예시", use_column_width=True)
+
