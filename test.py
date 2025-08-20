@@ -2,36 +2,42 @@ import streamlit as st
 import random
 import urllib.parse
 
-st.title("🎧 고등학교 공부 분위기 노래 추천 앱")
+# 앱 제목 꾸미기
+st.markdown("""
+<div style="text-align:center;">
+    <h1 style="color:#6C63FF;">📚 공부 분위기 맞춤 노래 추천 🎶</h1>
+    <p style="font-size:18px; color:gray;">과목과 분위기에 맞는 K-POP & POP 음악을 추천해드려요 ✨</p>
+</div>
+""", unsafe_allow_html=True)
 
 # 1️⃣ 과목 선택
-subject = st.selectbox("공부할 과목을 선택하세요:", [
+subject = st.selectbox("📖 공부할 과목을 선택하세요:", [
     "국어", "영어", "수학", "물리", "화학", "생물", "지구과학",
     "한국사", "세계사", "지리", "생활과 윤리", "윤리", "정치와 법", "기타"
 ])
 
 # 2️⃣ 책/자료 입력
-book = st.text_input("공부할 책이나 자료를 입력하세요 (선택 사항):")
+book = st.text_input("📕 공부할 책이나 자료를 입력하세요 (선택 사항):")
 
-# 3️⃣ 공부 분위기 선택
-mood = st.selectbox("공부 분위기를 선택하세요:", [
+# 3️⃣ 분위기 선택
+mood = st.selectbox("🌈 공부 분위기를 선택하세요:", [
     "집중", "편안함", "에너지", "감성", "차분함", "활기참", 
     "긴장감", "몽환적", "상쾌함", "우울함"
 ])
 
 # 곡 설명
 song_descriptions = [
-    "잔잔한 멜로디가 특징이에요",
-    "리듬감이 돋보여요",
-    "감성적인 가사가 돋보여요",
-    "폭발적인 후렴구가 있어요",
-    "몽환적인 분위기가 매력적이에요",
-    "밝고 신나는 에너지가 넘쳐요",
-    "차분히 흘러가는 멜로디가 좋아요",
-    "강렬한 비트가 인상적이에요"
+    "잔잔한 멜로디가 특징이에요 🎧",
+    "리듬감이 돋보여요 🥁",
+    "감성적인 가사가 돋보여요 💜",
+    "폭발적인 후렴구가 있어요 🔥",
+    "몽환적인 분위기가 매력적이에요 🌌",
+    "밝고 신나는 에너지가 넘쳐요 ✨",
+    "차분히 흘러가는 멜로디가 좋아요 🌿",
+    "강렬한 비트가 인상적이에요 ⚡"
 ]
 
-# 랜덤 가사 예시
+# 랜덤 가사
 lyrics_snippets = [
     "🎵 Cause I-I-I'm in the stars tonight (BTS - Dynamite)",
     "🎵 We don’t need permission to dance (BTS - Permission to Dance)",
@@ -54,7 +60,7 @@ study_fortune = [
     "🌙 감성이 풍부해지는 날이에요. 인문학적 과목 공부에 특히 잘 어울려요.",
 ]
 
-# 과목별 곡 데이터 (일부 예시, 필요시 확장 가능)
+# 과목별 곡 데이터 (일부 예시)
 song_library = {
     "국어": ["아이유 - 밤편지", "태연 - Fine", "Ed Sheeran - Perfect", "볼빨간사춘기 - 우주를 줄게"],
     "영어": ["Taylor Swift - Lover", "BTS - Dynamite", "BLACKPINK - How You Like That", "Maroon 5 - Memories"],
@@ -80,20 +86,45 @@ def recommend_songs(subject, book):
         picks.append(f"{book} 테마 플레이리스트")
     return picks
 
-# 결과 출력
-if st.button("추천 노래 보기"):
+# 버튼 클릭 시 결과
+if st.button("✨ 추천 노래 보기 ✨"):
     picks = recommend_songs(subject, book)
-    st.markdown(f"### 🎶 오늘의 테마: {subject} + {mood}")
-    
-    # 추천 곡 출력
+
+    # 제목 꾸미기
+    st.markdown(f"""
+    ---
+    <div style="text-align:center; background-color:#F0F0FF; padding:15px; border-radius:10px;">
+        <h2 style="color:#6C63FF;">🎶 오늘의 테마</h2>
+        <h3>{subject} + {mood}</h3>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 곡 출력
     for song in picks:
         sdesc = random.choice(song_descriptions)
         query = urllib.parse.quote(song)
         yt_link = f"https://www.youtube.com/results?search_query={query}"
-        st.write(f"- [{song}]({yt_link}) — {sdesc}")
-    
-    # 랜덤 가사 출력
-    st.markdown(f"**랜덤 가사 한 줄**: {random.choice(lyrics_snippets)}")
-    
-    # 오늘의 운세 출력
-    st.markdown(f"**오늘의 공부 운세**: {random.choice(study_fortune)}")
+        st.markdown(f"""
+        <div style="padding:8px; margin:6px 0; border-left:5px solid #6C63FF; background:#FAFAFF;">
+            <b><a href="{yt_link}" target="_blank" style="text-decoration:none; color:#333;">{song}</a></b><br>
+            <span style="color:gray;">{sdesc}</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # 랜덤 가사
+    st.markdown(f"""
+    ---
+    <div style="background:#FFF8E1; padding:10px; border-radius:8px; margin-top:15px;">
+        <h4>🎵 랜덤 가사 한 줄</h4>
+        <p style="font-style:italic;">{random.choice(lyrics_snippets)}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 오늘의 운세
+    st.markdown(f"""
+    <div style="background:#E8F5E9; padding:10px; border-radius:8px; margin-top:15px;">
+        <h4>🔮 오늘의 공부 운세</h4>
+        <p>{random.choice(study_fortune)}</p>
+    </div>
+    """, unsafe_allow_html=True)
+
